@@ -7,6 +7,7 @@ import {
   Marker,
   Icon,
   Popup,
+  GeoJSON,
   Title,
 } from 'leaflet';
 // Write Javascript code!
@@ -78,3 +79,56 @@ const popup = new Popup({
 });
 
 marker.addTo(map); //这句别忘记
+
+const data = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      properties: {
+        NAME: '数智交院',
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [120.06611466407774, 30.29731431527723],
+      },
+    },
+    {
+      type: 'Feature',
+      properties: {
+        NAME: '湖滨银泰',
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [120.15774965286255, 30.25558271403543],
+      },
+    },
+    {
+      type: 'Feature',
+      properties: {
+        NAME: '萧山机场',
+      },
+      geometry: {
+        type: 'Point',
+        coordinates: [120.43058395385741, 30.236675352276695],
+      },
+    },
+  ],
+};
+
+const glayer = new GeoJSON(data, {
+  pointToLayer: (geoJsonPoint, lating) => {
+    return new Marker(lating, {
+      icon: new Icon({
+        //原始直接引用网页图片地址
+        // iconUrl:
+        //   'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+        iconUrl: 'data:image/svg+xml,' + encodeURIComponent(svg),
+        iconSize: [40, 60],
+        iconAnchor: [20, 40],
+      }),
+    });
+  },
+})
+
+glayer.addTo(map)
